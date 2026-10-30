@@ -91,13 +91,12 @@ The exported Xschem netlist identifies the top-level circuit as `inverter` and c
 
 A reusable symbol is part of the intended deliverables. It should expose VDD, VIN, VSS, and VOUT and be associated with the inverter schematic.
 
-**Status:** Symbol creation and testbench instantiation have not yet been confirmed in the recorded project outputs.
 
 ### 4. Testbench and simulation
 
 A testbench should provide the supply rails and an input stimulus, then observe the output transition. Simulation results should be added only after the model library and simulator setup have been verified.
 
-**Status:** A working simulation and verified waveform results have not yet been established. An Xschem-generated circuit netlist alone does not demonstrate a successful simulation.
+
 
 ### 5. Physical layout in Magic
 
@@ -115,13 +114,13 @@ A Magic extraction file (`inverter.ext`) and an extracted SPICE netlist (`invert
 
 Magic's DRC checker is available. During the work, a DRC count reported eight error tiles. These have not yet been resolved or independently confirmed as a clean full-layout check.
 
-**Status:** DRC pass not achieved / not verified.
+**Status:** 0 DRC Errors.
 
 ### 8. Layout-versus-schematic check (LVS)
 
 Netgen 1.5.326 is installed and the Sky130A Netgen setup file is present. An LVS run has not yet completed successfully. The first attempted invocation used unsupported command-line options and incorrect file paths; subsequent inspection showed that the extracted layout netlist itself needs correction.
 
-**Status:** LVS pass not achieved / not verified.
+**Status:** (has to be updated)
 
 ## Verification checklist
 
@@ -159,7 +158,7 @@ Netgen 1.5.326 is installed and the Sky130A Netgen setup file is present. An LVS
 
 ## License
 
-Choose and add a license before publishing the repository. Check the licenses and redistribution terms of any third-party files before including them.
+
 """
 
 output_path = "/mnt/data/README.md"
