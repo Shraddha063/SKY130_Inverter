@@ -1,6 +1,6 @@
-import pypandoc
 
-readme = """# Sky130 CMOS Inverter Design Using Xschem and Magic
+
+## Sky130 CMOS Inverter Design Using Xschem and Magic
 
 A hands-on custom IC design project implementing a CMOS inverter using the **SkyWater SKY130A process design kit (PDK)**. The project documents the flow from schematic capture in Xschem to physical layout and verification in Magic, with SPICE netlisting and Netgen LVS as part of the intended workflow.
 
