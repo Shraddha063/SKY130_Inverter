@@ -160,7 +160,3 @@ Netgen 1.5.326 is installed and the Sky130A Netgen setup file is present. An LVS
 
 
 """
-
-output_path = "/mnt/data/README.md"
-pypandoc.convert_text(readme, "md", format="md", outputfile=output_path, extra_args=["--standalone"])
-print("Created README.md")
