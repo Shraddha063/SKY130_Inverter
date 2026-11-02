@@ -96,7 +96,7 @@ A reusable symbol is part of the intended deliverables. It should expose VDD, VI
 
 A testbench should provide the supply rails and an input stimulus, then observe the output transition. Simulation results should be added only after the model library and simulator setup have been verified.
 
-![Inverter Testbench & Simulation](./Screenshot%202026-10-28%20173144.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-10-28%20173144.png)
 
 
 ### 5. Physical layout in Magic
