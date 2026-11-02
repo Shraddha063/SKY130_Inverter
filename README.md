@@ -4,7 +4,7 @@
 
 A hands-on custom IC design project implementing a CMOS inverter using the **SkyWater SKY130A process design kit (PDK)**. The project documents the flow from schematic capture in Xschem to physical layout and verification in Magic, with SPICE netlisting and Netgen LVS as part of the intended workflow.
 
-> **Project status: Work in progress.** The schematic and Magic layout files have been created, and a Magic extraction has been generated. The current extracted netlist shows incorrect connectivity. DRC and LVS have not yet been demonstrated as passing. This README records the actual progress rather than presenting an unverified result as complete.
+
 
 ## Project objectives
 
@@ -83,10 +83,44 @@ The Sky130A PDK is installed outside the project directory. Its local path is sp
 
 ### 2. Schematic capture in Xschem
 
+#### 1. Configure the Sky130A PDK
+
+Set the PDK environment variables:
+
+```bash
+export PDK_ROOT=/home/desai2002/magic/netgen/xschem_git/release/open_pdks/sky130
+export PDK=sky130A
+export PDKPATH=$PDK_ROOT/$PDK
+export XSCHEM_LIBRARY_PATH=$PDKPATH/libs.tech/xschem
+```
+#### 2 Launch Xschem
+```bash
+cd ~/inverter18/xschem
+xschem
+```
+#### 3 Create the CMOS Inverter Schematic
+The CMOS inverter schematic was designed in Xschem using the Sky130A PDK transistor symbols.
+
+The design consists of:
+- PMOS transistor: sky130_fd_pr__pfet_01v8
+- NMOS transistor: sky130_fd_pr__nfet_01v8
+- Input: VIN
+- Output: VOUT
+- Power supply: VDD
+- Ground: VSS
+Circuit connections:
+1. PMOS source and bulk connected to VDD.
+2. NMOS source and bulk connected to VSS.
+3. Both transistor gates connected to VIN.
+4. Both transistor drains connected to VOUT.
 An inverter schematic has been created. It uses Sky130 primitive PMOS and NMOS devices.
 
+#### 4 Generate the SPICE Netlist
+After completing the schematic, generate the SPICE netlist using Xschem's netlisting function.
+The generated SPICE netlist is used for circuit simulation and subsequent Layout Versus Schematic (LVS) verification.
+
 The exported Xschem netlist identifies the top-level circuit as `inverter` and contains the intended four external nets: VDD, VIN, VSS, and VOUT. It contains PMOS and NMOS instances. Before considering the schematic complete, verify that the symbol pins, device terminals, and top-level labels are connected consistently.
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-10-28%20173144.png)
+![Inverter Schematic in Xschem](./Screenshots/Screenshot%2026-10-28%134722.png)
 
 ### 3. Inverter symbol
 
@@ -105,6 +139,11 @@ A testbench should provide the supply rails and an input stimulus, then observe 
 Magic was launched with the Sky130A technology configuration. A top-level `inverter.mag` layout and parameterized PMOS/NMOS device subcells were generated in the project working directory.
 
 The layout contains labelled top-level ports for VDD, VIN, VSS, and VOUT. These labels alone do not guarantee that the transistor terminals are electrically connected to the correct nets.
+the layout in magic generated using the command  
+readspice inverter18.spice
+or using 'import spice' option.
+after importing and connecting the pins and pmos-nmos in the appropriate way, the layout looks as follows.
+![Layout](./Screenshots/Screenshot%2026-10-31%172926.png)
 
 ### 6. Extraction
 
@@ -119,11 +158,11 @@ Magic's DRC checker is available. During the work, a DRC count reported eight er
 
 **Status:** 0 DRC Errors.
 ![Inverter Testbench & Simulation](./.png)
-![Inverter Testbench & Simulation](./.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%2026-11-01%230923.png)
 
 ### 8. Layout-versus-schematic check (LVS)
 
-Netgen 1.5.326 is installed and the Sky130A Netgen setup file is present. An LVS run has not yet completed successfully. The first attempted invocation used unsupported command-line options and incorrect file paths; subsequent inspection showed that the extracted layout netlist itself needs correction.
+lvs can be performed useing the following command lines
 
 **Status:** Matched
 
