@@ -225,6 +225,8 @@ lvs_final.log
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230727.png)
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230747.png)
 
+LVS status : Matched
+
 ### 6 Post-Layout Simulations:
 #### 1. Extract parasitics in Magic
 Launch Magic with your Sky130A technology file:
@@ -312,15 +314,35 @@ Here VSS is node 0 (ground). The meas lines print propagation delays and 10-90% 
 - vout is the inverse of vin in all three cycles (edges at 1, 11 and 21 ns, with the falling edges 5 ns later), and it settles cleanly at 0 V and 1.8 V.
 - The small spikes at each edge are normal. vout pokes slightly above 1.8 V when the input rises and slightly below 0 V when it falls. That is gate-to-drain (Miller) coupling from the fast 100 ps input edge, and it disappears with a slower input or a heavier load.
 
-The measurements
+##### The measurements
 
-Measurement|Value
-tpHL (output falling)|50 ps
-tpLH (output rising)|94 ps
-fall time (10–90%)|52 ps
-rise time (10–90%)|141 ps
+| Measurement | Value |
+|---|---|
+| tpHL (output falling) | 50 ps |
+| tpLH (output rising) | 94 ps |
+| Fall Time (10–90%) | 52 ps |
+| Rise Time (10–90%) | 141 ps |
 
 The rising edge is slower than the falling edge, as I mentioned earlier. Your pfet and nfet are both W = 1 µm, and a pfet of the same width drives less current. A rise-to-fall ratio near 2.7 is reasonable for sky130. The trigger times (1.05 ns and 6.15 ns) land exactly on the 0.9 V crossing of the input ramps, so the meas lines are set up correctly.
+
+### Verification checklist
+- [x] Ubuntu/WSL development environment available
+- [x] Xschem installed
+- [x] Magic installed
+- [x] Netgen installed
+- [x] Sky130A technology loaded in Magic
+- [x] Xschem inverter schematic file created
+- [x] Xschem SPICE netlist generated
+- [x] Magic layout file generated
+- [x] Magic extraction file generated
+- [x] Reusable inverter symbol created and verified
+- [x] Testbench created and instantiated
+- [x] ngspice model library and simulation verified
+- [x] Extracted netlist connectivity corrected
+- [x] DRC clean
+- [x] LVS matched
+- [x] Parasitic Extraction
+- [x] Post-Layout testbench Created and Simulated
 
 ## Acknowledgements
 
@@ -329,6 +351,4 @@ The rising edge is slower than the falling edge, as I mentioned earlier. Your pf
 - [Xschem](https://github.com/StefanSchippers/xschem)
 - [Magic VLSI](http://opencircuitdesign.com/magic/)
 - [Netgen](http://opencircuitdesign.com/netgen/)
-
-## License
 
