@@ -86,6 +86,7 @@ The Sky130A PDK is installed outside the project directory. Its local path is sp
 An inverter schematic has been created. It uses Sky130 primitive PMOS and NMOS devices.
 
 The exported Xschem netlist identifies the top-level circuit as `inverter` and contains the intended four external nets: VDD, VIN, VSS, and VOUT. It contains PMOS and NMOS instances. Before considering the schematic complete, verify that the symbol pins, device terminals, and top-level labels are connected consistently.
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-10-28%20173144.png)
 
 ### 3. Inverter symbol
 
@@ -110,18 +111,21 @@ The layout contains labelled top-level ports for VDD, VIN, VSS, and VOUT. These 
 A Magic extraction file (`inverter.ext`) and an extracted SPICE netlist (`inverter.spice`) were generated.
 
 **Current issue:** The extracted netlist does not match the intended inverter connectivity. In particular, the extracted subcircuit exposes only VIN and VSS, while the extraction data contains merges that join transistor terminals and supply/output nets that should remain distinct. The layout connectivity must be corrected before LVS can be meaningful.
+![Inverter Testbench & Simulation](./Screenshots/.png)
 
 ### 7. Design-rule check (DRC)
 
 Magic's DRC checker is available. During the work, a DRC count reported eight error tiles. These have not yet been resolved or independently confirmed as a clean full-layout check.
 
 **Status:** 0 DRC Errors.
+![Inverter Testbench & Simulation](./.png)
+![Inverter Testbench & Simulation](./.png)
 
 ### 8. Layout-versus-schematic check (LVS)
 
 Netgen 1.5.326 is installed and the Sky130A Netgen setup file is present. An LVS run has not yet completed successfully. The first attempted invocation used unsupported command-line options and incorrect file paths; subsequent inspection showed that the extracted layout netlist itself needs correction.
 
-**Status:** (has to be updated)
+**Status:** Matched
 
 ## Verification checklist
 
