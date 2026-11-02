@@ -149,7 +149,6 @@ readspice inverter18.spice
 ```
 or using 'import spice' option to import the .spice file.
 after importing and connecting the pins and pmos-nmos in the appropriate way, the layout looks as follows.
-![Layout](./Screenshots/Screenshot%202026-10-31%20133316.png)
 ![Layout](./Screenshots/Screenshot%202026-10-31%20172926.png)
 
 #### 1. Design-rule check (DRC)
