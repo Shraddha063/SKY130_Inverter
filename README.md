@@ -225,6 +225,102 @@ lvs_final.log
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230727.png)
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230747.png)
 
+### 6 Post-Layout Simulations:
+#### 1. Extract parasitics in Magic
+Launch Magic with your Sky130A technology file:
+```bash 
+export PDK_ROOT=/home/desai2002/magic/netgen/xschem_git/release/open_pdks/sky130
+export PDK=sky130A
+export PDKPATH=$PDK_ROOT/$PDK
+
+cd ~/inverter18/mag
+
+magic -T "$PDKPATH/libs.tech/magic/sky130A.tech" inverter.mag
+```
+
+At the Magic command prompt, execute:
+```
+extract all
+extresist tolerance 10
+extresist
+ext2spice lvs
+ext2spice cthresh 0
+ext2spice extresist on
+ext2spice
+```
+What these commands do:
+- extract all — extracts layout connectivity and geometry.
+- extresist — extracts interconnect resistance.
+- ext2spice cthresh 0 — retains extracted parasitic capacitances, including small ones.
+- ext2spice extresist on — includes extracted resistance in the SPICE output.
+- ext2spice — generates the extracted SPICE netlist.
+These are Magic's parasitic extraction controls.
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20154016.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20154046.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20154059.png)
+
+#### 2. Protect the parasitic netlist
+ext2spice overwrites inverter.spice each time, and that file now has parasitics. Copy it, and keep the LVS netlist separate in future:
+
+```bash
+cd ~/inverter18/mag
+cp inverter.spice inverter_pex.spice
+```
+For the next LVS, regenerate a plain netlist in Magic first (ext2spice cthresh infinite, ext2spice extresist off, ext2spice lvs, ext2spice) so the R/C elements don’t end up in the LVS netlist.
+
+#### 3. Post-layout testbench
+
+The extracted subcircuit is .subckt inverter VDD VOUT VIN VSS, so instantiate the pins in that order.
+
+```bash
+cat > tb_post.spice << 'EOF'
+* post-layout inverter testbench
+.lib /home/desai2002/magic/netgen/xschem_git/release/open_pdks/sky130/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+.include /home/desai2002/inverter18/mag/inverter_pex.spice
+
+VDD vdd 0 1.8
+VIN vin 0 PULSE(0 1.8 1n 100p 100p 5n 10n)
+XINV vdd vout vin 0 inverter
+CL vout 0 10f
+
+.temp 27
+.control
+tran 10p 30n
+meas tran tpHL trig v(vin) val=0.9 rise=1 targ v(vout) val=0.9 fall=1
+meas tran tpLH trig v(vin) val=0.9 fall=1 targ v(vout) val=0.9 rise=1
+meas tran trise trig v(vout) val=0.18 rise=1 targ v(vout) val=1.62 rise=1
+meas tran tfall trig v(vout) val=1.62 fall=1 targ v(vout) val=0.18 fall=1
+plot v(vin) v(vout)
+.endc
+.end
+EOF
+ngspice tb_post.spice
+```
+Here VSS is node 0 (ground). The meas lines print propagation delays and 10-90% rise and fall times in the console. The plot opens through WSLg, as Magic’s windows do.
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20161727.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20161743.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20161759.png)
+
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20161759.png)
+
+#### 5. Post-layout Simulation
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20164635.png)
+
+##### The waveform
+
+- vout is the inverse of vin in all three cycles (edges at 1, 11 and 21 ns, with the falling edges 5 ns later), and it settles cleanly at 0 V and 1.8 V.
+- The small spikes at each edge are normal. vout pokes slightly above 1.8 V when the input rises and slightly below 0 V when it falls. That is gate-to-drain (Miller) coupling from the fast 100 ps input edge, and it disappears with a slower input or a heavier load.
+
+The measurements
+
+Measurement|Value
+tpHL (output falling)|50 ps
+tpLH (output rising)|94 ps
+fall time (10–90%)|52 ps
+rise time (10–90%)|141 ps
+
+The rising edge is slower than the falling edge, as I mentioned earlier. Your pfet and nfet are both W = 1 µm, and a pfet of the same width drives less current. A rise-to-fall ratio near 2.7 is reasonable for sky130. The trigger times (1.05 ns and 6.15 ns) land exactly on the 0.9 V crossing of the input ramps, so the meas lines are set up correctly.
+
 ## Acknowledgements
 
 - [SkyWater Open Source PDK](https://github.com/google/skywater-pdk)
