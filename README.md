@@ -116,7 +116,7 @@ Circuit connections:
 3. Both transistor gates connected to VIN.
 4. Both transistor drains connected to VOUT.
 An inverter schematic has been created. It uses Sky130 primitive PMOS and NMOS devices.
-![Inverter Schematic in Xschem](./Screenshots/Screenshot%2026-10-28%134722.png)
+![Inverter Schematic in Xschem](./Screenshots/Screenshot%202026-10-28%20134722.png)
 
 #### 4 Generate the SPICE Netlist
 After completing the schematic, generate the SPICE netlist using Xschem's netlisting function.
@@ -125,7 +125,7 @@ The generated SPICE netlist is used for circuit simulation and subsequent Layout
 #### 5 Inverter symbol
 
 A reusable symbol is part of the intended deliverables. It should expose VDD, VIN, VSS, and VOUT and be associated with the inverter schematic.
-![Inverter Schematic in Xschem](./Screenshots/Screenshot%2026-11-02%124629.png)
+![Inverter Schematic in Xschem](./Screenshots/Screenshot%202026-11-02%20124629.png)
 
 ### 3. Testbench and simulation
 
@@ -149,8 +149,8 @@ readspice inverter18.spice
 ```
 or using 'import spice' option to import the .spice file.
 after importing and connecting the pins and pmos-nmos in the appropriate way, the layout looks as follows.
-![Layout](./Screenshots/Screenshot%2026-10-31%133316.png)
-![Layout](./Screenshots/Screenshot%2026-10-31%172926.png)
+![Layout](./Screenshots/Screenshot%202026-10-31%20133316.png)
+![Layout](./Screenshots/Screenshot%202026-10-31%20172926.png)
 
 #### 1. Design-rule check (DRC)
 DRC can be check with the following command inside the magic console:
@@ -159,8 +159,8 @@ drc check
 drc count
 ```
 0 DRC errors were Found!.
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%2026-11-02%141212.png)
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%2026-11-01%230923.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20141212.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230923.png)
 
 #### 2. Extraction
 To Extract the netlists
@@ -172,7 +172,7 @@ ext2spice
 ```
 A Magic extraction file (`inverter.ext`) and an extracted SPICE netlist (`inverter.spice`) were generated.
 
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%2026-11-01%230923.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230923.png)
 
 
 
@@ -188,7 +188,7 @@ netgen-lvs -batch lvs \
 "$PDKPATH/libs.tech/netgen/sky130A_setup.tcl" \
 lvs_final.log
 ```
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%2026-11-01%230923.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230923.png)
 
 
 ## Acknowledgements
