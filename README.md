@@ -74,9 +74,39 @@ sky130-cmos-inverter/
 ### 1. Environment and tool availability
 
 The work environment is Ubuntu 22.04 under WSL2. Xschem, Magic, and Netgen were installed and their versions were recorded. Magic successfully loaded the `sky130A` technology configuration.
-cd ~/inverter18/mag
+#### 1. Verify the project directories
+Open Ubuntu terminal and execute:
+whoami
+pwd
+cd ~/inverter18
+ls -la
+tree -L 2
 
-The Sky130A PDK is installed outside the project directory. Its local path is specific to the development machine and is not required to match the path on another system.
+If tree isn't installed: sudo apt install tree.
+``` bash #### 2. Configure the Sky130A PDK
+export PDK_ROOT=/home/desai2002/magic/netgen/xschem_git/release/open_pdks/sky130
+export PDK=sky130A
+export PDKPATH=$PDK_ROOT/$PDK
+export XSCHEM_LIBRARY_PATH=$PDKPATH/libs.tech/xschem
+
+echo $PDK_ROOT
+echo $PDK
+echo $XSCHEM_LIBRARY_PATH
+```
+
+#### 3. Verify the installed EDA tools
+```bash
+which xschem
+xschem --version
+
+which magic
+magic --version
+
+which ngspice
+ngspice --version
+
+which netgen-lvs
+```
 
 ### 2. Schematic capture in Xschem
 
@@ -159,7 +189,7 @@ drc count
 ```
 0 DRC errors were Found!.
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20141212.png)
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230923.png)
+
 
 #### 2. Extraction
 To Extract the netlists
@@ -187,8 +217,8 @@ netgen-lvs -batch lvs \
 "$PDKPATH/libs.tech/netgen/sky130A_setup.tcl" \
 lvs_final.log
 ```
-![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230923.png)
-
+![Inverter Testbench & Simulation](.Screenshots/Screenshot%202026-11-01%20230727.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230747.png)
 
 ## Acknowledgements
 
