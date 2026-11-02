@@ -304,6 +304,7 @@ Here VSS is node 0 (ground). The meas lines print propagation delays and 10-90% 
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20161759.png)
 
 #### 5. Post-layout Simulation
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20155037.png)
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-02%20164635.png)
 
 ##### The waveform
