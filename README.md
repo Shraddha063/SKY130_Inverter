@@ -76,14 +76,16 @@ sky130-cmos-inverter/
 The work environment is Ubuntu 22.04 under WSL2. Xschem, Magic, and Netgen were installed and their versions were recorded. Magic successfully loaded the `sky130A` technology configuration.
 #### 1. Verify the project directories
 Open Ubuntu terminal and execute:
+```bash 
 whoami
 pwd
 cd ~/inverter18
 ls -la
 tree -L 2
-
-If tree isn't installed: sudo apt install tree.
-``` bash #### 2. Configure the Sky130A PDK
+```
+If tree isn't installed: `sudo apt install tree`.
+ #### 2. Configure the Sky130A PDK
+ ``` bash
 export PDK_ROOT=/home/desai2002/magic/netgen/xschem_git/release/open_pdks/sky130
 export PDK=sky130A
 export PDKPATH=$PDK_ROOT/$PDK
@@ -107,6 +109,9 @@ ngspice --version
 
 which netgen-lvs
 ```
+![](./Screenshots/Screenshot%202026-11-02%20132655.png)
+![](./Screenshots/Screenshot%202026-11-02%20134719.png)
+![](./Screenshots/Screenshot%202026-11-02%20134926.png)
 
 ### 2. Schematic capture in Xschem
 
@@ -217,7 +222,7 @@ netgen-lvs -batch lvs \
 "$PDKPATH/libs.tech/netgen/sky130A_setup.tcl" \
 lvs_final.log
 ```
-![Inverter Testbench & Simulation](.Screenshots/Screenshot%202026-11-01%20230727.png)
+![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230727.png)
 ![Inverter Testbench & Simulation](./Screenshots/Screenshot%202026-11-01%20230747.png)
 
 ## Acknowledgements
